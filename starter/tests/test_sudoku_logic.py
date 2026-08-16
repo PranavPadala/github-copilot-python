@@ -71,3 +71,23 @@ def test_generate_puzzle_returns_puzzle_and_solution():
 
     filled_cells = sum(cell != sudoku_logic.EMPTY for row in puzzle for cell in row)
     assert 0 < filled_cells <= 81
+    assert sudoku_logic.count_solutions(puzzle, limit=2) == 1
+
+
+def test_generate_puzzle_produces_unique_solution_for_each_difficulty():
+    counts = {}
+    for difficulty, expected_clues in {
+        'easy': 45,
+        'medium': 36,
+        'hard': 30,
+    }.items():
+        puzzle, solution = sudoku_logic.generate_puzzle(difficulty=difficulty)
+        filled_cells = sum(cell != sudoku_logic.EMPTY for row in puzzle for cell in row)
+        counts[difficulty] = filled_cells
+
+        assert len(puzzle) == sudoku_logic.SIZE
+        assert len(solution) == sudoku_logic.SIZE
+        assert sudoku_logic.count_solutions(puzzle, limit=2) == 1
+        assert filled_cells >= expected_clues
+
+    assert counts['easy'] >= counts['medium'] >= counts['hard']

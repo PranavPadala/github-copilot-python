@@ -1,18 +1,74 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sudoku Game</title>
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <h1>Sudoku Game</h1>
-  <div id="sudoku-board"></div>
-  <div class="controls">
-    <button id="new-game">New Game</button>
-    <button id="check-solution">Check Solution</button>
-    <span id="message"></span>
+  <div class="app-shell">
+    <header class="top-bar">
+      <h1>Sudoku Game</h1>
+      <button id="theme-toggle" type="button" aria-label="Toggle dark mode">Dark Mode</button>
+    </header>
+
+    <main class="game-layout">
+      <section class="board-panel" aria-label="Sudoku board panel">
+        <div class="status-row">
+          <div class="status-group">
+            <label for="difficulty">Difficulty:</label>
+            <select id="difficulty" aria-label="Select game difficulty">
+              <option value="easy">Easy</option>
+              <option value="medium" selected>Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+          <div class="status-group timer-group">
+            <span class="timer-label">Time:</span>
+            <span id="timer" aria-live="polite">00:00</span>
+          </div>
+        </div>
+
+        <div id="sudoku-board" class="sudoku-board" aria-label="Sudoku board"></div>
+
+        <div class="controls" aria-label="Game actions">
+          <button id="new-game" type="button">New Game</button>
+          <button id="hint-button" type="button">Hint</button>
+          <button id="check-solution" type="button">Check Solution</button>
+        </div>
+
+        <div id="message" class="message" aria-live="polite"></div>
+      </section>
+
+      <aside class="sidebar" aria-label="Leaderboard and stats">
+        <div class="stats-card">
+          <h2>Game Stats</h2>
+          <p>Hints used: <span id="hints-used">0</span></p>
+        </div>
+
+        <div class="leaderboard-card">
+          <h2>Top 10 Leaderboard</h2>
+          <ol id="leaderboard-list" aria-live="polite"></ol>
+        </div>
+      </aside>
+    </main>
   </div>
+
+  <div id="leaderboard-modal" class="leaderboard-modal hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="leaderboard-title">
+    <div class="leaderboard-modal-content">
+      <h2 id="leaderboard-title">Save your score</h2>
+      <form id="leaderboard-form">
+        <label for="player-name">Player name</label>
+        <input id="player-name" name="playerName" type="text" maxlength="24" autocomplete="off" required>
+        <div class="leaderboard-modal-actions">
+          <button id="leaderboard-cancel" class="secondary" type="button">Cancel</button>
+          <button type="submit">Save Score</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="/static/main.js"></script>
 </body>
 </html>
